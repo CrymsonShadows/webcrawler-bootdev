@@ -1,0 +1,15 @@
+{
+  "name": "webcrawler-bootdev",
+  "version": "1.0.0",
+  "description": "This is a webcrawler built in js following the boot.dev guide.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
