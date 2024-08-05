@@ -7,3 +7,10 @@ test('normalizeURL', () => {
     const expected = ''
     expect(actual).toEqual(expected)
 })
+
+test('normalizeURL with https and / path', () => {
+    const input = 'https://blog.boot.dev/path/';
+    const actual = normalizeURL(input);
+    const expected = 'blog.boot.dev/path'
+    expect(actual).toEqual(expected);
+})
