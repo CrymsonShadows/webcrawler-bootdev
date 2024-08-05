@@ -14,3 +14,24 @@ test('normalizeURL with https and / path', () => {
     const expected = 'blog.boot.dev/path'
     expect(actual).toEqual(expected);
 })
+
+test('normalizeURL with https and no given path', () => {
+    const input = 'https://blog.boot.dev/path';
+    const actual = normalizeURL(input);
+    const expected = 'blog.boot.dev/path'
+    expect(actual).toEqual(expected);
+})
+
+test('normalizeURL with http and / path', () => {
+    const input = 'http://blog.boot.dev/path/';
+    const actual = normalizeURL(input);
+    const expected = 'blog.boot.dev/path'
+    expect(actual).toEqual(expected);
+})
+
+test('normalizeURL with http and no given path', () => {
+    const input = 'http://blog.boot.dev/path';
+    const actual = normalizeURL(input);
+    const expected = 'blog.boot.dev/path'
+    expect(actual).toEqual(expected);
+})
