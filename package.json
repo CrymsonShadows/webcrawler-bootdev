@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "This is a webcrawler built in js following the boot.dev guide.",
   "main": "main.js",
+  "type": "module",
   "scripts": {
-    "start": "node main.js",
-    "test": "jest"
-  },
+  "start": "node main.js",
+  "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+},
+"jest": {
+  "transform": {}
+},
   "author": "",
   "license": "ISC",
   "devDependencies": {
