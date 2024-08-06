@@ -14,8 +14,15 @@ function getURLsFromHTML(htmlBody, baseURL) {
     const anchors = dom.window.document.querySelectorAll('a');
     let links = [];
     for (const anchor of anchors) {
-        const link = new URL(anchor.getAttribute('href'), baseURL);
-        links.push(link);
+        if (anchor.hasAttribute('href')) {
+            try {
+                const link = new URL(anchor.getAttribute('href'), baseURL).href;
+                links.push(link);
+            } catch(err) {
+                console.log(`${err.message}: ${href}`)
+            }
+        }
+        
     }
     return links;
 }

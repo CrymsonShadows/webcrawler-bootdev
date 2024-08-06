@@ -44,7 +44,7 @@ test('getURLsFromHTML getting multiple URLs from html', () => {
         </body>
     </html>`
     const actual = getURLsFromHTML(input, 'https://example.com');
-    const expected = [new URL('https://example.com'), new URL('http://example.com/foo')];
+    const expected = ['https://example.com/', 'http://example.com/foo'];
     expect(actual).toEqual(expected);
 })
 
@@ -56,6 +56,6 @@ test('getURLsFromHTML converts relative path to absolute', () => {
         </body>
     </html>`
     const actual = getURLsFromHTML(input, 'https://example.com');
-    const expected = [new URL('https://example.com'), new URL('http://example.com/foo')];
+    const expected = ['https://example.com/', 'https://example.com/foo'];
     expect(actual).toEqual(expected);
 })
