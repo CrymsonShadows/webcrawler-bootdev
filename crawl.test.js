@@ -39,12 +39,12 @@ test('normalizeURL with http and no given path', () => {
 test('getURLsFromHTML getting multiple URLs from html', () => {
     const input = `<html>
         <body>
-            <a href="https://example.com">example</a>
+            <a href="https://blog.boot.dev">example</a>
             <a href="http://example.com/foo">example 2</a>
         </body>
     </html>`
     const actual = getURLsFromHTML(input, 'https://example.com');
-    const expected = ['https://example.com/', 'http://example.com/foo'];
+    const expected = ['https://blog.boot.dev/', 'http://example.com/foo'];
     expect(actual).toEqual(expected);
 })
 
