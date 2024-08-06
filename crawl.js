@@ -1,3 +1,5 @@
+import { JSDOM } from 'jsdom'
+
 function normalizeURL(urlString) {
     if (urlString.length == 0) {
         return ''
@@ -7,4 +9,15 @@ function normalizeURL(urlString) {
     return normalizedURL;
 }
 
-export { normalizeURL };
+function getURLsFromHTML(htmlBody, baseURL) {
+    const dom = new JSDOM(htmlBody);
+    const anchors = dom.window.document.querySelectorAll('a');
+    let links = [];
+    for (const anchor of anchors) {
+        const link = new URL(anchor.getAttribute('href'), baseURL);
+        links.push(link);
+    }
+    return links;
+}
+
+export { normalizeURL, getURLsFromHTML };
