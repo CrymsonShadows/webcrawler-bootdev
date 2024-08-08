@@ -27,4 +27,22 @@ function getURLsFromHTML(htmlBody, baseURL) {
     return links;
 }
 
-export { normalizeURL, getURLsFromHTML };
+async function crawlPage(currentURL) {
+    try {
+        const response = await fetch(currentURL);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const contentType = response.headers.get('Content-Type');
+        
+        if (!contentType.includes('text/html')) {
+            throw new Error('Content type is not text/html');
+        }
+        const html = await response.text()
+        console.log();
+    } catch(err) {
+        console.error(err.message);
+    }
+}
+
+export { normalizeURL, getURLsFromHTML, crawlPage };
