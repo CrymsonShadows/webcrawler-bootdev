@@ -28,21 +28,27 @@ function getURLsFromHTML(htmlBody, baseURL) {
 }
 
 async function crawlPage(currentURL) {
+    let response;
     try {
-        const response = await fetch(currentURL);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const contentType = response.headers.get('Content-Type');
-        
-        if (!contentType.includes('text/html')) {
-            throw new Error('Content type is not text/html');
-        }
-        const html = await response.text()
-        console.log();
-    } catch(err) {
-        console.error(err.message);
+        response = await fetch(currentURL);
+    } catch (err) {
+        throw new Error(`Got Network error: ${err.message}`);
     }
+
+    if (response.status > 399) {
+        console.log(`Got HTTP error: ${response.status} ${response.statusText}`);
+        return
+    }
+        
+    const contentType = response.headers.get('Content-Type');
+    
+    if (!contentType || !contentType.includes('text/html')) {
+        console.log('Response is not HTML');
+        return
+    }
+    
+    const html = await response.text();
+    console.log(html);
 }
 
 export { normalizeURL, getURLsFromHTML, crawlPage };
