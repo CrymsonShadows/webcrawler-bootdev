@@ -37,15 +37,13 @@ async function fetchPage(currentURL) {
     }
 
     if (response.status > 399) {
-        console.log(`Got HTTP error: ${response.status} ${response.statusText}`);
-        return
+        throw new Error(`Got HTTP error: ${response.status} ${response.statusText}`);
     }
         
     const contentType = response.headers.get('Content-Type');
     
     if (!contentType || !contentType.includes('text/html')) {
-        console.log('Response is not HTML');
-        return
+        throw new Error(`Response is not HTML: ${contentType}`);
     }
     
     const html = await response.text();
@@ -55,10 +53,12 @@ async function fetchPage(currentURL) {
 async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
     const baseURLDomain = new URL(baseURL).hostname;
     const currentURLDomain = new URL(currentURL).hostname;
-    if (!currentURLDomain.includes(baseURLDomain)) {
+    if (currentURLDomain !== baseURLDomain) {
         return pages;
     }
+
     const normalizedCurrentURL = normalizeURL(currentURL);
+
     if (!pages[normalizedCurrentURL]) {
         pages[normalizedCurrentURL] = 1;
     } else {
@@ -66,11 +66,20 @@ async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
         return pages;
     }
 
-    const html = await fetchPage(currentURL);
+    console.log(`crawling ${currentURL}`);
+    let html = '';
+    try {
+        html = await fetchPage(currentURL);
+    } catch (err) {
+        console.log(err.message);
+        return pages;
+    }
+
     const urls = getURLsFromHTML(html, baseURL);
     for (const url of urls) {
         pages = await crawlPage(baseURL, url, pages);
     }
+    
     return pages;
 }
 
