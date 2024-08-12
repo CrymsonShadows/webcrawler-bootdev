@@ -1,4 +1,5 @@
 import { JSDOM } from 'jsdom'
+import { get } from 'node:https';
 
 function normalizeURL(urlString) {
     if (urlString.length == 0) {
@@ -15,11 +16,12 @@ function getURLsFromHTML(htmlBody, baseURL) {
     let links = [];
     for (const anchor of anchors) {
         if (anchor.hasAttribute('href')) {
+            let link = anchor.getAttribute('href');
             try {
-                const link = new URL(anchor.getAttribute('href'), baseURL).href;
+                link = new URL(link, baseURL).href;
                 links.push(link);
             } catch(err) {
-                console.log(`${err.message}: ${href}`)
+                console.log(`${err.message}: ${link}`)
             }
         }
         
@@ -27,7 +29,7 @@ function getURLsFromHTML(htmlBody, baseURL) {
     return links;
 }
 
-async function crawlPage(currentURL) {
+async function fetchPage(currentURL) {
     let response;
     try {
         response = await fetch(currentURL);
@@ -48,7 +50,29 @@ async function crawlPage(currentURL) {
     }
     
     const html = await response.text();
-    console.log(html);
+    return html;
+}
+
+async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
+    const baseURLDomain = new URL(baseURL).hostname;
+    const currentURLDomain = new URL(currentURL).hostname;
+    if (!currentURLDomain.includes(baseURLDomain)) {
+        return pages;
+    }
+    const normalizedCurrentURL = normalizeURL(currentURL);
+    if (!pages[normalizedCurrentURL]) {
+        pages[normalizedCurrentURL] = 1;
+    } else {
+        pages[normalizedCurrentURL]++;
+        return pages;
+    }
+
+    const html = await fetchPage(currentURL);
+    const urls = getURLsFromHTML(html, baseURL);
+    for (const url of urls) {
+        pages = await crawlPage(baseURL, url, pages);
+    }
+    return pages;
 }
 
 export { normalizeURL, getURLsFromHTML, crawlPage };

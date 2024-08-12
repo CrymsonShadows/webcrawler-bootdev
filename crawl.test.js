@@ -59,3 +59,15 @@ test('getURLsFromHTML converts relative path to absolute', () => {
     const expected = ['https://example.com/', 'https://example.com/foo'];
     expect(actual).toEqual(expected);
 })
+
+test('getURLsFromHTML converts relative path that starts with ./ to absolute', () => {
+    const input = `<html>
+        <body>
+            <a href="https://example.com">example</a>
+            <a href="./foo">example 2</a>
+        </body>
+    </html>`
+    const actual = getURLsFromHTML(input, 'https://example.com');
+    const expected = ['https://example.com/', 'https://example.com/foo'];
+    expect(actual).toEqual(expected);
+})

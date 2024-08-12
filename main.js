@@ -1,7 +1,8 @@
 import { argv } from 'node:process';
 import { crawlPage } from './crawl.js';
+import { forStatement } from '@babel/types';
 
-function main() {
+async function main() {
     if (argv.length < 3) {
         console.log("No website url given to crawl.");
         return;
@@ -13,7 +14,8 @@ function main() {
     const baseURL = argv[2];
     console.log(`The base url to crawl will be ${baseURL}`);
 
-    crawlPage(baseURL);
+    const pages = await crawlPage(baseURL);
+    console.log(pages);
 }
 
 main();
