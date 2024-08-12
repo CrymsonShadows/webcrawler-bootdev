@@ -1,5 +1,4 @@
 import { JSDOM } from 'jsdom'
-import { get } from 'node:https';
 
 function normalizeURL(urlString) {
     if (urlString.length == 0) {
