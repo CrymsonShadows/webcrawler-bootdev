@@ -1,6 +1,5 @@
 import { test, expect } from "@jest/globals";
 import { getURLsFromHTML, normalizeURL } from "./crawl.js";
-import { sortPages } from "./report.js";
 
 test('normalizeURL', () => {
     const input = ''
@@ -70,22 +69,5 @@ test('getURLsFromHTML converts relative path that starts with ./ to absolute', (
     </html>`
     const actual = getURLsFromHTML(input, 'https://example.com');
     const expected = ['https://example.com/', 'https://example.com/foo'];
-    expect(actual).toEqual(expected);
-})
-
-test('sortPages returns sorted pages largest to smallest', () => {
-    const input = {
-        'examplepage.com': 3,
-        'examplepage.com/about': 2,
-        'examplepage.com/bear': 4,
-        'examplepage.com/foo': 5
-    }
-    const actual = sortPages(input);
-    const expected = [
-        ['examplepage.com/foo', 5],
-        ['examplepage.com/bear', 4],
-        ['examplepage.com', 3],
-        ['examplepage.com/about', 2]   
-    ];
     expect(actual).toEqual(expected);
 })
