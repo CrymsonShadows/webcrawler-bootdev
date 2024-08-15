@@ -8,7 +8,12 @@ function printReport(pages) {
 
 function sortPages(pages) {
     let pagesArr = Object.entries(pages);
-    pagesArr = pagesArr.sort((a, b) => b[1] - a[1]);
+    pagesArr.sort((pageA, pageB) => {
+        if (pageA[1] === pageB[1]) {
+            return pageA[0].localeCompare(pageB[0]);
+        }
+        return pageB[1] - pageA[1]
+    });
     return pagesArr;
 }
 
